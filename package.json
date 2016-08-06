@@ -39,6 +39,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-clean": "^0.3.2",
     "gulp-eslint": "^3.0.1",
+    "gulp-rename": "^1.2.2",
     "gulp-tape": "0.0.9",
     "gulp-uglify": "^2.0.0",
     "tap-colorize": "^1.2.0",

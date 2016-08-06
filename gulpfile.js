@@ -1,5 +1,6 @@
 const gulp       = require('gulp');
 const clean      = require('gulp-clean');
+const rename     = require('gulp-rename');
 const eslint     = require('gulp-eslint');
 const browserify = require('browserify');
 const babelify   = require('babelify');
@@ -10,7 +11,7 @@ const source     = require('vinyl-source-stream');
 const buffer     = require('vinyl-buffer');
 
 gulp.task('clean:dist', () =>
-  gulp.src('./dist')
+  gulp.src('./dist', { read: false })
   .pipe(clean())
 );
 
@@ -23,7 +24,9 @@ gulp.task('lint', () =>
 gulp.task('build:dist', [ 'lint' ], () =>
   browserify({
     entries: 'lib/index.js',
-    transform: [ babelify, { presets: [ 'es2015', 'stage-0' ] } ]
+    transform: [
+      [ babelify, { presets: [ 'es2015', 'stage-0' ] } ]
+    ]
   }).bundle()
   .pipe(source('redux-remote-resource.js'))
   .pipe(buffer())
@@ -31,7 +34,8 @@ gulp.task('build:dist', [ 'lint' ], () =>
 );
 
 gulp.task('build:min', [ 'build:dist' ], () =>
-  gulp.src('dist/redux-remote-resource.js')
+  gulp.src('./dist/redux-remote-resource.js')
+  .pipe(rename('redux-remote-resource.min.js'))
   .pipe(uglify())
   .pipe(gulp.dest('./dist'))
 );
