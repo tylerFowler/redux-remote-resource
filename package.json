@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Flexible Redux middleware for making remote API calls",
   "author": "Tyler Fowler <tylerfowler.1337@gmail.com>",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "gulp test",
     "prepublish": "gulp",
