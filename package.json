@@ -1,0 +1,28 @@
+{
+  "name": "redux-remote-resource",
+  "version": "0.0.0",
+  "description": "Flexible Redux middleware for making remote API calls",
+  "author": "Tyler Fowler <tylerfowler.1337@gmail.com>",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "gulp test",
+    "prepublish": "gulp",
+    "build": "gulp build:dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tylerfowler/redux-remote-resource.git"
+  },
+  "keywords": [
+    "redux",
+    "api",
+    "middleware",
+    "remote",
+    "resource"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tylerfowler/redux-remote-resource/issues"
+  },
+  "homepage": "https://github.com/tylerfowler/redux-remote-resource#readme"
+}
