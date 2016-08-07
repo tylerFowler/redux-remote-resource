@@ -1,10 +1,9 @@
 require('babel-register');
 
 const test = require('tape');
-const utils = require('../lib/utils');
+const { isCacheableRequest, isPromise } = require('../lib/utils');
 
 test('Utility: uncacheableMethods', t => {
-  const { isCacheableRequest } = utils;
   const get = 'GET';
   t.ok(isCacheableRequest(get), 'get is cacheable');
 
@@ -27,8 +26,6 @@ test('Utility: uncacheableMethods', t => {
 });
 
 test('Utility: isPromise', t => {
-  const { isPromise } = utils;
-
   const realPromise = Promise.resolve(0);
   t.ok(isPromise(realPromise), 'a promise is in fact a promise');
 
