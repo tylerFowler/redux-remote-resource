@@ -93,22 +93,24 @@ export function createPost(topic, postData) {
 
 #### API:
 - `uri`: the endpoint to hit, can be a relative or absolute path, is passed into Fetch verbatim
-- `method`: HTTP method to use, case insensitive
+- `method`: HTTP method to use, case insensitive. Default: `GET`
 - `headers`: any additional headers to include with the request
   - NOTE: if the `body` value is an object, the header `{'Content-Type': 'application/json'}` will be automatically injected, but will not be written if there is another `Content-Type` header set in the action creator 'headers' field
 - `body`: the data sent to the server in the request body, accepts types:
   - Promise: will continuously resolve recursively until an acceptable, non-promise value is reached, using that value as the body
   - Object: will be stringified
-  - Function: will be called with the current state tree
-  - Primitive values are simply passed along`
+  - Function: will be called with the current state tree, with the returned value being used as the body
+  - Primitive values are simply passed along
 - `lifecycle`: contains hooks that govern the emitted values during the request, any of these can be omitted to simply not do anything for that part of the request **(NOTE: not yet implemented, if any are empty an error will be thrown)**. These hooks can just be primitive values or objects, in which case they will be dispatched as actions. See below for arguments when these values are functions.
   - `request`: ran directly before making the API call
     - If this hook is a function it will be called with `(dispatch)`
+    - Will *always* run regardless of statusActions
   - `success`: ran after receiving a successful response (i.e. HTTP status code is in the 200 range)
     - If a function it will be called with `(data, dispatch, response)`
     - Will never run if a `statusAction` is triggered
   - `failure`: ran after receiving a failed response (i.e. HTTP status code is *not* in the 200 range)
     - If a function it will be called with `(error, dispatch, data, response)`
+    - Will never run if a `statusAction` is triggered
 - `bypassStatusActions`: completely disables the `statusAction` hooks for this request
 
 ## TODO
