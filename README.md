@@ -2,8 +2,6 @@ redux-remote-resource
 =====================
 Flexible Redux middleware for making remote API calls
 
-*Currently a work in progress, close to being in the initial useable state*
-
 ## Usage
 This middleware works at two levels: with a top level global configuration, and with an action-by-action interface. This allows us to implement interceptors for common things like session expiration or global 404 Not Found pages.
 
