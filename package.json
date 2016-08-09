@@ -7,7 +7,7 @@
   "scripts": {
     "test": "gulp test",
     "prepublish": "gulp",
-    "build": "gulp build:dist"
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
