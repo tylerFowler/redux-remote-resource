@@ -112,6 +112,7 @@ export function createPost(topic, postData) {
     - If a function it will be called with `(error, dispatch, data, response)`
     - Will never run if a `statusAction` is triggered
 - `bypassStatusActions`: completely disables the `statusAction` hooks for this request
+- `requestOpts`: this field will be merged with the fetch request object that is generated from some of the above fields (i.e. method, body, headers, etc...), with the options here overwriting the options set in the action creator; can be used to set arbitrary options in the final call to the Fetch API
 
 ## TODO
 - [ ] Fetch API call & hook calling
