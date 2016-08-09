@@ -115,7 +115,8 @@ export function createPost(topic, postData) {
 - `requestOpts`: this field will be merged with the fetch request object that is generated from some of the above fields (i.e. method, body, headers, etc...), with the options here overwriting the options set in the action creator; can be used to set arbitrary options in the final call to the Fetch API
 
 ## TODO
-- [ ] Fetch API call & hook calling
+- [ ] Write tests for `callRemoteResource` (in `remoteCall.js`)
+- [ ] Pull some middleware hook processing into the Request Builder pipeline as functions & test
 - [ ] Allow lifecycle hooks to be skipped when not defined
 - [ ] Add caching mechanism that maps a request to it's corresponding part of the state
 
