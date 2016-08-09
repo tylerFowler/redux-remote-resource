@@ -21,9 +21,11 @@ gulp.task('lint', () =>
   .pipe(eslint.failAfterError())
 );
 
-gulp.task('build:dist', [ 'lint' ], () =>
+gulp.task('build:dist', [ 'clean:dist', 'lint' ], () =>
   browserify({
     entries: 'lib/index.js',
+    standalone: 'ReduxRemoteResource',
+    debug: true,
     transform: [
       [ babelify, { presets: [ 'es2015', 'stage-0' ] } ]
     ]
@@ -44,5 +46,7 @@ gulp.task('test', () =>
   gulp.src('tests/*.spec.js')
   .pipe(tape({ reporter: require('tap-colorize')() }))
 );
+
+gulp.task('build', [ 'clean:dist', 'build:dist', 'build:min' ]);
 
 gulp.task('default', [ 'clean:dist', 'test', 'lint', 'build:dist', 'build:min' ]);
