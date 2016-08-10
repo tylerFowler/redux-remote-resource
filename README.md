@@ -5,6 +5,8 @@ Flexible Redux middleware for making remote API calls
 ## Usage
 This middleware works at two levels: with a top level global configuration, and with an action-by-action interface. This allows us to implement interceptors for common things like session expiration or global 404 Not Found pages.
 
+It's highly recommended that you place this middleware first in the chain, not doing so will cause some other middlewares to not catch the lifecycle hook dispatches. For example placing this middleware after `react-router-redux` will completely break it's built in action creators like `goBack()`.
+
 ### Configuration
 
 #### At a glance:
