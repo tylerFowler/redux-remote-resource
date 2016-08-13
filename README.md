@@ -117,9 +117,7 @@ export function createPost(topic, postData) {
 ## TODO
 - [ ] Allow users to inject custom fetch object for better mocking (or custom fetch fns)
 - [ ] Remove deps on polyfills, turn this package into a BYOP (Bring Your Own Polyfills) for everything *except* fetch
-- [ ] Pull some middleware hook processing into the Request Builder pipeline as functions & test
 - [ ] Write tests for `callRemoteResource` (in `remoteCall.js`)
-- [ ] Allow lifecycle hooks to be skipped when not defined
 - [ ] Add support for hooks that are functions returning promises
 - [ ] Add caching mechanism that maps a request to it's corresponding part of the state
 
