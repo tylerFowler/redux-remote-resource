@@ -120,6 +120,7 @@ export function createPost(topic, postData) {
 - [ ] Pull some middleware hook processing into the Request Builder pipeline as functions & test
 - [ ] Write tests for `callRemoteResource` (in `remoteCall.js`)
 - [ ] Allow lifecycle hooks to be skipped when not defined
+- [ ] Add support for hooks that are functions returning promises
 - [ ] Add caching mechanism that maps a request to it's corresponding part of the state
 
 ## License
