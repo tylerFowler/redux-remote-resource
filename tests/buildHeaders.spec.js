@@ -2,19 +2,20 @@ require('babel-register');
 
 const test             = require('tape');
 const { buildHeaders } = require('../lib/requestBuilders');
+const { failTest, nest } = require('./mock.helper');
 
 test('buildHeaders', st => {
-  st.test('plain headers', t => {
+  st.test(nest('plain headers'), t => {
     const headers = { 'Content-Type': 'application/json' };
     const expected = { 'Content-Type': 'application/json' };
     return buildHeaders({}, { headers }, {})
     .then(h => {
       t.deepEqual(h, expected, 'forwards plain headers');
       t.end();
-    }).catch(t.fail);
+    }).catch(failTest(t));
   });
 
-  st.test('injected headers', t => {
+  st.test(nest('injected headers'), t => {
     const headers = { 'myheader': 'val' };
     const injected = { 'global-header': 'global' };
     const expected = { 'myheader': 'val', 'global-header': 'global' };
@@ -25,10 +26,10 @@ test('buildHeaders', st => {
       t.deepEqual(h, { 'global-header': 'gl' }, 'can overwrite injected headers');
       t.end();
     })
-    .catch(t.fail);
+    .catch(failTest(t));
   });
 
-  st.test('automatic body type detection', t => {
+  st.test(nest('automatic body type detection'), t => {
     const headers = { 'myheader': 'val' };
     const prefilled = { 'Content-Type': 'octet-stream' };
     const body = { key: 'value' };
@@ -40,10 +41,10 @@ test('buildHeaders', st => {
       t.deepEqual(h, prefilled, "doesn't overwrite existing content types");
       t.end();
     })
-    .catch(t.fail);
+    .catch(failTest(t));
   });
 
-  st.test('function headers', t => {
+  st.test(nest('function headers'), t => {
     const headers = { 'some-header': () => 'some-value' };
 
     const stateHeaders = { 'fn': state => state.val };
@@ -68,17 +69,17 @@ test('buildHeaders', st => {
     .catch(err => { t.ok(err, 'forwards function errors'); t.end(); });
   });
 
-  st.test('promise headers', t => {
+  st.test(nest('promise headers'), t => {
     const headers = { 'some-header': Promise.resolve('some-value') };
     const expected = { 'some-header': 'some-value' };
     return buildHeaders({}, { headers })
     .then(h => {
       t.deepEqual(h, expected, 'follows promise values to resolution');
       t.end();
-    }).catch(t.fail);
+    }).catch(failTest(t));
   });
 
-  st.test('object headers', t => {
+  st.test(nest('object headers'), t => {
     const headers = { 'some-header': { 'nested-header': 'nested-value' } };
     return buildHeaders({}, { headers })
     .then(() => {
@@ -87,7 +88,7 @@ test('buildHeaders', st => {
     }).catch(err => { t.ok(err, 'threw error for object value'); t.end(); });
   });
 
-  st.test('mixed headers', t => {
+  st.test(nest('mixed headers'), t => {
     const headers = {
       'some-header': 'some-val',
       'fn-header': state => `fn-val${state.val}`,
@@ -110,7 +111,7 @@ test('buildHeaders', st => {
     .then(h => {
       t.deepEqual(h, expected, 'can use a mix of all types of headers');
       t.end();
-    }).catch(t.fail);
+    }).catch(failTest(t));
   });
 
   st.end();

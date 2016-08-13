@@ -2,11 +2,10 @@ require('babel-register');
 
 const test = require('tape');
 const { makeRemoteCallHooks } = require('../lib/requestBuilders');
-
-const failTest = t => error => { t.fail(error); t.end(); };
+const { failTest, nest } = require('./mock.helper');
 
 test('makeRemoteCallHooks', st => {
-  st.test('\t-> plain hooks', t => {
+  st.test(nest('plain hooks'), t => {
     const hooks = { request: 'REQUEST' };
     const dispatch = act => act;
     return makeRemoteCallHooks(hooks, dispatch)
@@ -18,7 +17,7 @@ test('makeRemoteCallHooks', st => {
     }).catch(failTest(t));
   });
 
-  st.test('\t-> object hooks', t => {
+  st.test(nest('object hooks'), t => {
     const hooks = { request: { type: 'REQUEST' } };
     const dispatch = act => act;
     return makeRemoteCallHooks(hooks, dispatch)
@@ -30,7 +29,7 @@ test('makeRemoteCallHooks', st => {
     }).catch(failTest(t));
   });
 
-  st.test('\t-> missing hooks', t => {
+  st.test(nest('missing hooks'), t => {
     const hooks = {};
     const dispatch = () => {
       throw new Error('should not have called dispatch');
@@ -48,7 +47,7 @@ test('makeRemoteCallHooks', st => {
     }).catch(failTest(t));
   });
 
-  st.test('\t-> promise hooks', t => {
+  st.test(nest('promise hooks'), t => {
     const hooks = {
       request: Promise.resolve('REQUEST'),
       success: Promise.resolve().then(() => 'SUCCESS')
@@ -68,7 +67,7 @@ test('makeRemoteCallHooks', st => {
     }).catch(failTest(t));
   });
 
-  st.test('\t-> function hooks', t => {
+  st.test(nest('function hooks'), t => {
     t.plan(3);
 
     const hooks = {
