@@ -1,7 +1,7 @@
 require('babel-register');
 
 const test            = require('tape');
-const { cacheLookup } = require('../lib/middleware');
+const { cacheLookup } = require('../lib/requestBuilders');
 
 const cacheMapMock = () => true;
 

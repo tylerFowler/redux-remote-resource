@@ -1,7 +1,7 @@
 require('babel-register');
 
 const test             = require('tape');
-const { buildHeaders } = require('../lib/middleware');
+const { buildHeaders } = require('../lib/requestBuilders');
 
 test('buildHeaders', st => {
   st.test('plain headers', t => {
