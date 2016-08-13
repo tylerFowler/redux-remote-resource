@@ -1,7 +1,7 @@
 require('babel-register');
 
 const test = require('tape');
-const { makeRemoteCallHooks } = require('../lib/middleware');
+const { makeRemoteCallHooks } = require('../lib/requestBuilders');
 
 const failTest = t => error => { t.fail(error); t.end(); };
 

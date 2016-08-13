@@ -1,7 +1,7 @@
 require('babel-register');
 
 const test = require('tape');
-const { makeStatusActions } = require('../lib/middleware');
+const { makeStatusActions } = require('../lib/requestBuilders');
 
 test('makeStatusActions', t => {
   t.plan(8);
