@@ -115,7 +115,6 @@ export function createPost(topic, postData) {
 - `requestOpts`: this field will be merged with the fetch request object that is generated from some of the above fields (i.e. method, body, headers, etc...), with the options here overwriting the options set in the action creator; can be used to set arbitrary options in the final call to the Fetch API
 
 ## TODO
-- [ ] Allow users to inject custom fetch object for better mocking (or custom fetch fns)
 - [ ] Remove deps on polyfills, turn this package into a BYOP (Bring Your Own Polyfills) for everything *except* fetch
 - [ ] Write tests for `callRemoteResource` (in `remoteCall.js`)
 - [ ] Add support for hooks that are functions returning promises
