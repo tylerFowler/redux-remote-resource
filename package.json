@@ -14,11 +14,14 @@
     "url": "git+https://github.com/tylerfowler/redux-remote-resource.git"
   },
   "keywords": [
-    "redux",
-    "api",
+    "Redux",
     "middleware",
+    "API",
     "remote",
-    "resource"
+    "resource",
+    "REST",
+    "redux-middleware",
+    "redux-api"
   ],
   "license": "MIT",
   "bugs": {
