@@ -41,7 +41,7 @@ const middlewares = applyMiddleware(remoteResourceMiddleware({
 
 #### API:
 - `injectedHeaders`: headers that are injected on *every* outgoing request. Values can be a string (or other primitive), function, or promise. Functions are evaluated on every outgoing request, and are given the `state` tree for decision making. Additionally for promises the value that is resolved to will be used as the header value. Note that raw objects will be rejected with a `CallProcessingError`. A common use for this is to inject authorization tokens for authentication with some backend API. Also note that any headers written in an action creator with the same key as a header here will overwrite the global header value set here.
-- `statusActions`: actions that are dispatched if the server responds with any of the given HTTP status codes. Note that these actions are meant to provide a hook for completely disrupting & redirecting the flow of the request, such as for when redirecting a user to the signin page if their session/auth token has expired. Values can be a primitive, a function, or an object. If the value is a primitive it will be dispatched in an action with the value being the `type` field. Likewise objects are dispatched verbatim. If the value is a function it will be called on each instance of the assigned status code, and will be given the `dispatch` function and the raw `response` object (from the Fetch API).
+- `statusActions`: actions that are dispatched if the server responds with any of the given HTTP status codes. Note that these actions are meant to provide a hook for completely disrupting & redirecting the flow of the request, such as for when redirecting a user to the signin page if their session/auth token has expired. Values can be a primitive, a function, promise, or an object. If the value is a primitive it will be dispatched in an action with the value being the `type` field. Likewise objects are dispatched verbatim. If the value is a function it will be called on each instance of the assigned status code, and will be given the `dispatch` function and the raw `response` object (from the Fetch API). Note that if the value is a promise it must resolve to a valid instance of one of the other types (though errors will be caught).
 
 ### Action Creator
 
@@ -101,7 +101,7 @@ export function createPost(topic, postData) {
   - Object: will be stringified
   - Function: will be called with the current state tree, with the returned value being used as the body
   - Primitive values are simply passed along
-- `lifecycle`: contains hooks that govern the emitted values during the request, any of these can be omitted to simply not do anything for that part of the request **(NOTE: not yet implemented, if any are empty an error will be thrown)**. These hooks can just be primitive values or objects, in which case they will be dispatched as actions. See below for arguments when these values are functions.
+- `lifecycle`: contains hooks that govern the emitted values during the request, any of these can be omitted to simply not do anything for that part of the request. These hooks can just be primitive values or objects, in which case they will be dispatched as actions. See below for arguments when these values are functions.
   - `request`: ran directly before making the API call
     - If this hook is a function it will be called with `(dispatch)`
     - Will *always* run regardless of statusActions
