@@ -117,7 +117,6 @@ export function createPost(topic, postData) {
 
 ## TODO
 - [ ] Write end-to-end middleware tests
-- [ ] Write tests for `callRemoteResource` (in `remoteCall.js`)
 - [ ] Remove deps on polyfills, turn this package into a BYOP (Bring Your Own Polyfills) for everything *except* fetch
 - [ ] Add support for hooks that are functions returning promises
 - [ ] Add caching mechanism that maps a request to it's corresponding part of the state
