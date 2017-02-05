@@ -24,7 +24,7 @@ test('cacheLookup', t => {
   .catch(t.fail);
 
   cacheLookup({}, { method: 'GET', cacheMapping: () => true })
-  .then(res => t.ok(res, 'uses cache is cacheMapping returns true'))
+  .then(res => t.ok(res, 'uses cache if cacheMapping returns true'))
   .catch(t.fail);
 
   cacheLookup({ k: true }, { method: 'GET', cacheMapping: state => state.k })
