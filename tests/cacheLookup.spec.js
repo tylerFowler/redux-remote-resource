@@ -8,10 +8,7 @@ const cacheMapMock = () => true;
 test('cacheLookup', t => {
   t.plan(6);
 
-  const uncacheableMethod = 'POST';
-  cacheLookup({}, {
-    method: uncacheableMethod, nocache: false, cacheMapping: cacheMapMock
-  })
+  cacheLookup({}, { method: 'POST', nocache: false, cacheMapping: cacheMapMock })
   .then(res => t.notok(res, 'skips cache for uncacheable methods'))
   .catch(t.fail);
 
@@ -27,7 +24,7 @@ test('cacheLookup', t => {
   .then(res => t.ok(res, 'uses cache if cacheMapping returns true'))
   .catch(t.fail);
 
-  cacheLookup({ k: true }, { method: 'GET', cacheMapping: state => state.k })
+  cacheLookup({ k: 'value' }, { method: 'GET', cacheMapping: state => state.k })
   .then(res => t.ok(res, 'state is passed to cacheMapping'))
   .catch(t.fail);
 
