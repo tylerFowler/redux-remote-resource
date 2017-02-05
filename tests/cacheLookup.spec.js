@@ -5,7 +5,7 @@ const { cacheLookup } = require('../lib/requestBuilders');
 
 const cacheMapMock = () => true;
 
-test.only('cacheLookup', t => {
+test('cacheLookup', t => {
   t.plan(8);
 
   cacheLookup({}, { method: 'POST', nocache: false, cacheMapping: cacheMapMock })
