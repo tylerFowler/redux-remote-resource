@@ -168,7 +168,6 @@ export function fetchPostComments(postid) {
 ## TODO
 - [ ] Write end-to-end middleware tests
 - [ ] Remove deps on polyfills, turn this package into a BYOP (Bring Your Own Polyfills) for everything *except* fetch
-- [ ] Add support for hooks that are functions returning promises
 
 ## License
 See [LICENSE](./LICENSE)

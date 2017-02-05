@@ -86,5 +86,29 @@ test('makeRemoteCallHooks', st => {
     }).catch(failTest(t));
   });
 
+  st.test(nest('function hooks returning a promise'), t => {
+    t.plan(3);
+
+    const hooks = {
+      request: dispatch => Promise.resolve().then(() =>
+        t.ok(dispatch, 'request was called')
+      ),
+      success: (data, dispatch, res) => Promise.resolve().then(() =>
+        t.ok(data && dispatch && res, 'success was called')
+      ),
+      failure: (err, dispatch, data, res) => Promise.resolve().then(() =>
+        t.ok(err && dispatch && data && res, 'error was called')
+      )
+    };
+
+    const dispatch = () => {};
+    return makeRemoteCallHooks(hooks, dispatch)
+    .then(hs => {
+      hs.onBeforeCall(1);
+      hs.onCallSuccess(1, 2, 3);
+      hs.onCallFailure(1, 2, 3, 4);
+    }).catch(failTest(t));
+  });
+
   st.end();
 });
