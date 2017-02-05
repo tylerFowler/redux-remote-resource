@@ -112,14 +112,63 @@ export function createPost(topic, postData) {
   - `failure`: ran after receiving a failed response (i.e. HTTP status code is *not* in the 200 range)
     - If a function it will be called with `(error, dispatch, data, response)`
     - Will never run if a `statusAction` is triggered
+- `cacheMapping`: a function that is called with the state, if this function resolves (or otherwise evaluates) to a truthy value this value will be used to immediately trigger the success callback with that value, if it evaluates to a falsy value then the request will continue as normal
+  - Note that the cache will not be used for `POST`, `PUT`, or `DELETE` HTTP methods, nor will it be used if no `cacheMapping` function is given
+- `nocache`: a boolean value that can be used to disable caching for the API call
 - `bypassStatusActions`: completely disables the `statusAction` hooks for this request
 - `requestOpts`: this field will be merged with the fetch request object that is generated from some of the above fields (i.e. method, body, headers, etc...), with the options here overwriting the options set in the action creator; can be used to set arbitrary options in the final call to the Fetch API
+
+### Caching
+Caching for all request types except `POST`, `PUT`, or `DELETE` can be used to link an API call with a specific part of the application state using a special mapping function passed into an action creator with the `cacheMapping` key. The `cacheMapping` value should be a function that accepts the application state and returns a value that will then cause the API call to short circuit and immediately invoke success with the value. If the function returns a falsy value then the request will continue as normal. Additionally the `nocache` key can also be set to skip the caching altogether.
+
+*Note: the cache has no concept of a TTL so be careful only to use the caching feature with values that are not likely to change in a single session, or until the state is cleared*
+
+**Example:**
+```javascript
+export function fetchPost(postid) {
+  return {
+    [RemoteResource]: {
+      uri: `/api/posts/${postid}`,
+      cacheMapping: state => state.posts[postid],
+      lifecycle: {
+        request: actionTypes.FETCH_POST_REQUEST,
+        success: actionTypes.FETCH_POST_SUCCESS,
+        failure: actionTypes.FETCH_POST_FAILURE
+      }
+    }
+  };
+}
+
+// a slightly more involved example where the cached value has a default value
+export function fetchPostComments(postid) {
+  return {
+    [RemoteResource]: {
+      uri: `/api/posts/${postid}/comments`,
+      cacheMapping: state => {
+        const { comments } = state.posts[postid];
+        // comments defaults to an empty array and so will always return a
+        // truthy value
+        if (comments.length > 0) return comments;
+        return false;
+      },
+      lifecycle: {
+        request: actionTypes.FETCH_POST_COMMENTS_REQUEST,
+        success: (data, response) => {
+          // data has the comments directly from the state
+          // note that if the cached value is returned as opposed to an API
+          // call then the response object will be undefined
+          dispatch(updatePostComments(postid, data));
+        }
+      }
+    }
+  }
+}
+```
 
 ## TODO
 - [ ] Write end-to-end middleware tests
 - [ ] Remove deps on polyfills, turn this package into a BYOP (Bring Your Own Polyfills) for everything *except* fetch
 - [ ] Add support for hooks that are functions returning promises
-- [ ] Add caching mechanism that maps a request to it's corresponding part of the state
 
 ## License
 See [LICENSE](./LICENSE)
