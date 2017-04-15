@@ -7,15 +7,18 @@ This middleware works at two levels: with a top level global configuration, and 
 
 It's highly recommended that you place this middleware first in the chain, not doing so will cause some other middlewares to not catch the lifecycle hook dispatches. For example placing this middleware after `react-router-redux` will completely break it's built in action creators like `goBack()`.
 
+**Note:** this middleware does require `redux-thunk` in order to work, see below for usage.
+
 ### Configuration
 
 #### At a glance:
 ```javascript
 import { applyMidleware } from 'redux';
+import thunk from 'redux-thunk';
 import remoteResourceMiddleware from 'redux-remote-resource';
 
 // basic, no global configuration
-const middlewares = applyMiddleware(remoteResourceMiddleware());
+const middlewares = applyMiddleware(remoteResourceMiddleware(), thunk);
 
 // with a global configuration
 const middlewares = applyMiddleware(remoteResourceMiddleware({
@@ -34,7 +37,7 @@ const middlewares = applyMiddleware(remoteResourceMiddleware({
     // also accepts functions that are called w/ a dispatch fn and the response
     419: (dispatch, res) => dispatch(actions.sessionTimeout())
   }
-}));
+}), thunk);
 
 // ...
 ```
