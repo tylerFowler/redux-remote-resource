@@ -1,10 +1,5 @@
-CHANGELOG
+Changelog
 =========
 
-# 0.2.5 (Unreleased)
-Changes:
-  - Will now prefer the global fetch function, falling back to `isometric-fetch`
-deps:
-- es6-promise@4.0.5
-- browserify@14.0.0
-
+For release notes please refer to the Releases page for this repo:
+https://github.com/tylerFowler/redux-remote-resource/releases
