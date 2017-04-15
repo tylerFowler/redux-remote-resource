@@ -1,7 +1,27 @@
 require('babel-register');
 
 const test = require('tape');
-const { isCacheableRequest, isPromise } = require('../lib/utils');
+const RemoteResource = require('../lib/RemoteResource').default;
+const {
+  isRemoteResourceAction,
+  isCacheableRequest,
+  isPromise
+} = require('../lib/utils');
+
+test('Utility: isRemoteResourceAction', t => {
+  t.ok(isRemoteResourceAction({ [RemoteResource]: {} }),
+    'returns true if symbol is found');
+
+  t.notok(isRemoteResourceAction({ a: 1 }),
+    'returns false if symbol is not found');
+
+  t.notok(isRemoteResourceAction({RemoteResource: {}}),
+    'returns false for string not symbol');
+
+  t.notok(isRemoteResourceAction({}), 'returns false for empty object');
+  t.notok(isRemoteResourceAction(), 'returns false for null');
+  t.end();
+});
 
 test('Utility: uncacheableMethods', t => {
   const get = 'GET';
