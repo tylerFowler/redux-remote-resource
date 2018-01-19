@@ -168,7 +168,11 @@ export function fetchPostComments(postid) {
 }
 ```
 
+### Other things to note
+- When using this library with rollup.js you must created a 'named export' for the `RemoteResource` symbol and register it in your rollup configuration as it will not detect the named exports from this library.
+
 ## TODO
+- [ ] Use rollup.js for building vs browserify
 - [ ] Write end-to-end middleware tests
 - [ ] Remove deps on polyfills, turn this package into a BYOP (Bring Your Own Polyfills) for everything *except* fetch
 - [ ] Add a cancellation feature exported as a dispatchable function
