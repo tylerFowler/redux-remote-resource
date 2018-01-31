@@ -12,13 +12,13 @@ const buffer     = require('vinyl-buffer');
 
 gulp.task('clean:dist', () =>
   gulp.src('./dist', { read: false })
-  .pipe(clean())
+    .pipe(clean())
 );
 
 gulp.task('lint', () =>
   gulp.src('lib/*.js')
-  .pipe(eslint())
-  .pipe(eslint.failAfterError())
+    .pipe(eslint())
+    .pipe(eslint.failAfterError())
 );
 
 gulp.task('build:dist', [ 'clean:dist', 'lint' ], () =>
@@ -30,21 +30,21 @@ gulp.task('build:dist', [ 'clean:dist', 'lint' ], () =>
       [ babelify, { presets: [ 'es2015', 'stage-0' ] } ]
     ]
   }).bundle()
-  .pipe(source('redux-remote-resource.js'))
-  .pipe(buffer())
-  .pipe(gulp.dest('./dist'))
+    .pipe(source('redux-remote-resource.js'))
+    .pipe(buffer())
+    .pipe(gulp.dest('./dist'))
 );
 
 gulp.task('build:min', [ 'build:dist' ], () =>
   gulp.src('./dist/redux-remote-resource.js')
-  .pipe(rename('redux-remote-resource.min.js'))
-  .pipe(uglify())
-  .pipe(gulp.dest('./dist'))
+    .pipe(rename('redux-remote-resource.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('./dist'))
 );
 
 gulp.task('test', () =>
   gulp.src('tests/*.spec.js')
-  .pipe(tape({ reporter: require('tap-colorize')() }))
+    .pipe(tape({ reporter: require('tap-colorize')() }))
 );
 
 gulp.task('build', [ 'clean:dist', 'build:dist', 'build:min' ]);

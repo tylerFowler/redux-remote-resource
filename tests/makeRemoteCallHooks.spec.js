@@ -9,24 +9,24 @@ test('makeRemoteCallHooks', st => {
     const hooks = { request: 'REQUEST' };
     const dispatch = act => act;
     return makeRemoteCallHooks(hooks, dispatch)
-    .then(hs => {
-      t.deepEqual(
-        hs.onBeforeCall(), { type: hooks.request }, 'dispatches plain action'
-      );
-      t.end();
-    }).catch(failTest(t));
+      .then(hs => {
+        t.deepEqual(
+          hs.onBeforeCall(), { type: hooks.request }, 'dispatches plain action'
+        );
+        t.end();
+      }).catch(failTest(t));
   });
 
   st.test(nest('object hooks'), t => {
     const hooks = { request: { type: 'REQUEST' } };
     const dispatch = act => act;
     return makeRemoteCallHooks(hooks, dispatch)
-    .then(hs => {
-      t.deepEqual(
-        hs.onBeforeCall(), hooks.request, 'dispatches objects verbatim'
-      );
-      t.end();
-    }).catch(failTest(t));
+      .then(hs => {
+        t.deepEqual(
+          hs.onBeforeCall(), hooks.request, 'dispatches objects verbatim'
+        );
+        t.end();
+      }).catch(failTest(t));
   });
 
   st.test(nest('missing hooks'), t => {
@@ -36,15 +36,15 @@ test('makeRemoteCallHooks', st => {
     };
 
     return makeRemoteCallHooks(hooks, dispatch)
-    .then(hs => {
-      try {
-        hs.onBeforeCall();
-        hs.onCallSuccess();
-        hs.onCallFailure();
-        t.pass('does not dispatch anything for ommitted hooks');
-      } catch (error) { t.fail(error); }
-      t.end();
-    }).catch(failTest(t));
+      .then(hs => {
+        try {
+          hs.onBeforeCall();
+          hs.onCallSuccess();
+          hs.onCallFailure();
+          t.pass('does not dispatch anything for ommitted hooks');
+        } catch (error) { t.fail(error); }
+        t.end();
+      }).catch(failTest(t));
   });
 
   st.test(nest('promise hooks'), t => {
@@ -54,17 +54,17 @@ test('makeRemoteCallHooks', st => {
     };
     const dispatch = act => act;
     return makeRemoteCallHooks(hooks, dispatch)
-    .then(hs => {
-      t.deepEqual(
-        hs.onBeforeCall(), { type: 'REQUEST' }, 'dispatches w/ resolved values'
-      );
+      .then(hs => {
+        t.deepEqual(
+          hs.onBeforeCall(), { type: 'REQUEST' }, 'dispatches w/ resolved values'
+        );
 
-      t.deepEqual(
-        hs.onCallSuccess(), { type: 'SUCCESS' }, 'recursively resolves promises'
-      );
+        t.deepEqual(
+          hs.onCallSuccess(), { type: 'SUCCESS' }, 'recursively resolves promises'
+        );
 
-      t.end();
-    }).catch(failTest(t));
+        t.end();
+      }).catch(failTest(t));
   });
 
   st.test(nest('function hooks'), t => {
@@ -79,11 +79,11 @@ test('makeRemoteCallHooks', st => {
     };
     const dispatch = () => {};
     return makeRemoteCallHooks(hooks, dispatch)
-    .then(hs => {
-      hs.onBeforeCall(1);
-      hs.onCallSuccess(1, 2, 3);
-      hs.onCallFailure(1, 2, 3, 4);
-    }).catch(failTest(t));
+      .then(hs => {
+        hs.onBeforeCall(1);
+        hs.onCallSuccess(1, 2, 3);
+        hs.onCallFailure(1, 2, 3, 4);
+      }).catch(failTest(t));
   });
 
   st.test(nest('function hooks returning a promise'), t => {
@@ -103,11 +103,11 @@ test('makeRemoteCallHooks', st => {
 
     const dispatch = () => {};
     return makeRemoteCallHooks(hooks, dispatch)
-    .then(hs => {
-      hs.onBeforeCall(1);
-      hs.onCallSuccess(1, 2, 3);
-      hs.onCallFailure(1, 2, 3, 4);
-    }).catch(failTest(t));
+      .then(hs => {
+        hs.onBeforeCall(1);
+        hs.onCallSuccess(1, 2, 3);
+        hs.onCallFailure(1, 2, 3, 4);
+      }).catch(failTest(t));
   });
 
   st.end();
