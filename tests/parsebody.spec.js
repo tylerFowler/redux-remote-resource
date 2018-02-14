@@ -1,7 +1,7 @@
 require('babel-register');
 
-const test          = require('tape');
-const { parseBody } = require('../lib/requestBuilders');
+const test      = require('tape');
+const parseBody = require('../lib/builders/parseBody').default;
 
 test('parseBody', t => {
   t.plan(6);

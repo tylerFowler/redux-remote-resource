@@ -1,8 +1,8 @@
 require('babel-register');
 
-const test = require('tape');
-const { makeRemoteCallHooks } = require('../lib/requestBuilders');
-const { failTest, nest } = require('./mock.helper');
+const test                = require('tape');
+const makeRemoteCallHooks = require('../lib/builders/makeRemoteCallHooks').default;
+const { failTest, nest }  = require('./mock.helper');
 
 test('makeRemoteCallHooks', st => {
   st.test(nest('plain hooks'), t => {

@@ -1,7 +1,7 @@
 require('babel-register');
 
-const test             = require('tape');
-const { buildHeaders } = require('../lib/requestBuilders');
+const test               = require('tape');
+const buildHeaders       = require('../lib/builders/buildHeaders').default;
 const { failTest, nest } = require('./mock.helper');
 
 test('buildHeaders', st => {
