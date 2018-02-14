@@ -147,7 +147,8 @@ export function fetchPost(postid) {
 export function fetchPostComments(postid) {
   return {
     [RemoteResource]: {
-      uri: `/api/posts/${postid}/comments`,
+      uri: `/api/posts/${postid}/comments/`,
+      query: { limit: 25 }, // actual fetched uri will be `/api/posts/${postid}/comments?limit=25`
       cacheMapping: state => {
         const { comments } = state.posts[postid];
         // comments defaults to an empty array and so will always return a
