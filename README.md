@@ -97,6 +97,7 @@ export function createPost(topic, postData) {
 
 #### API:
 - `uri`: the endpoint to hit, can be a relative or absolute path, is passed into Fetch verbatim
+- `query`: an optional object that will be used to generate a query string, which is appended to the `uri` (removing a trailing `/` if one is found). Note that this will throw an error if it's value is anything other than an object. Also note that if this object contains nested objects, the value written to the query string will be a JSON string of the nested object.
 - `method`: HTTP method to use, case insensitive. Default: `GET`
 - `headers`: any additional headers to include with the request
   - NOTE: if the `body` value is an object, the header `{'Content-Type': 'application/json'}` will be automatically injected, but will not be written if there is another `Content-Type` header set in the action creator 'headers' field
