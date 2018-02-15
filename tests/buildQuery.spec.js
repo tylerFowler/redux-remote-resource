@@ -4,7 +4,7 @@ const test = require('tape');
 const buildQuery = require('../lib/builders/buildQuery').default;
 const { failTest, nest } = require('./mock.helper');
 
-test.only('buildQuery', st => {
+test('buildQuery', st => {
   st.test(nest('flat object'), t => {
     const params = { a: '', b: 'hello world', c: 5 };
     const expected = '?a=&b=hello%20world&c=5';
