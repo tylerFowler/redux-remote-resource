@@ -1,6 +1,6 @@
 {
   "name": "redux-remote-resource",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Flexible Redux middleware for making remote API calls",
   "author": "Tyler Fowler <tylerfowler.1337@gmail.com>",
   "main": "dist/redux-remote-resource.js",
