@@ -6,7 +6,7 @@
   "main": "dist/redux-remote-resource.js",
   "scripts": {
     "test": "gulp test",
-    "prepublish": "gulp",
+    "prepublishOnly": "gulp",
     "build": "gulp build",
     "preversion": "gulp test",
     "postversion": "git push && git push --tags"
