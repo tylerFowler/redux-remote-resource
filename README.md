@@ -180,6 +180,7 @@ export function fetchPostComments(postid) {
 - [ ] Add a cancellation feature exported as a dispatchable function
 - [ ] Pull handling different hook types into a shared utility
 - [ ] Consider adding a utility helper fn (or setting) that will invalidate cache mappings if the query parameters change
+- [ ] Refactor request building into more of a pipeline (rxjs?)s
 
 ## License
 See [LICENSE](./LICENSE)
