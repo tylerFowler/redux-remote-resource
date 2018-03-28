@@ -4,7 +4,7 @@ const test                = require('tape');
 const makeStatusActions   = require('../lib/builders/makeStatusActions').default;
 const { defaultCallOpts } = require('../lib/middleware');
 
-test.only('makeStatusActions', t => {
+test('makeStatusActions', t => {
   t.plan(9);
 
   const plainActions = { 400: 'SOME_ACTION' };
