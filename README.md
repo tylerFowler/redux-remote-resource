@@ -46,6 +46,7 @@ const middlewares = applyMiddleware(remoteResourceMiddleware({
 - `injectedHeaders`: headers that are injected on *every* outgoing request. Values can be a string (or other primitive), function, or promise. Functions are evaluated on every outgoing request, and are given the `state` tree for decision making. Additionally for promises the value that is resolved to will be used as the header value. Note that raw objects will be rejected with a `CallProcessingError`. A common use for this is to inject authorization tokens for authentication with some backend API. Also note that any headers written in an action creator with the same key as a header here will overwrite the global header value set here.
 - `statusActions`: actions that are dispatched if the server responds with any of the given HTTP status codes. Note that these actions are meant to provide a hook for completely disrupting & redirecting the flow of the request, such as for when redirecting a user to the signin page if their session/auth token has expired. Values can be a primitive, a function, promise, or an object. If the value is a primitive it will be dispatched in an action with the value being the `type` field. Likewise objects are dispatched verbatim. If the value is a function it will be called on each instance of the assigned status code, and will be given the `dispatch` function and the raw `response` object (from the Fetch API). Note that if the value is a promise it must resolve to a valid instance of one of the other types (though errors will be caught).
 - `requestOpts`: arbitrary options that are passed into the Fetch call's settings object, can be overwritten by the same key on an API call action creator. Useful for setting global cookie behavior.
+- `_fetch`: if present, will be used instead of the global fetch implementation, useful for testing. Note that if there is no global fetch implementation *and* this option is not given then the `isomorphic-fetch` polyfill will be used.
 
 ### Action Creator
 
@@ -121,6 +122,7 @@ export function createPost(topic, postData) {
 - `nocache`: a boolean value that can be used to disable caching for the API call
 - `bypassStatusActions`: completely disables the `statusAction` hooks for this request
 - `requestOpts`: this field will be merged with the fetch request object that is generated from some of the above fields (i.e. method, body, headers, etc...), with the options here overwriting the options set in the action creator; can be used to set arbitrary options in the final call to the Fetch API
+- `_fetch`: if present, will be used instead of the global fetch implementation, useful for testing. Note that if there is no global fetch implementation *and* this option is not given then the `isomorphic-fetch` polyfill will be used.
 
 ### Caching
 Caching for all request types except `POST`, `PUT`, or `DELETE` can be used to link an API call with a specific part of the application state using a special mapping function passed into an action creator with the `cacheMapping` key. The `cacheMapping` value should be a function that accepts the application state and returns a value that will then cause the API call to short circuit and immediately invoke success with the value. If the function returns a falsy value then the request will continue as normal. Additionally the `nocache` key can also be set to skip the caching altogether.
@@ -175,9 +177,7 @@ export function fetchPostComments(postid) {
 
 ## TODO
 - [ ] Use rollup.js for building vs browserify
-- [ ] Write end-to-end middleware tests
 - [ ] Remove deps on polyfills, turn this package into a BYOP (Bring Your Own Polyfills) for everything *except* fetch
-- [ ] Add a cancellation feature exported as a dispatchable function
 - [ ] Pull handling different hook types into a shared utility
 - [ ] Consider adding a utility helper fn (or setting) that will invalidate cache mappings if the query parameters change
 - [ ] Refactor request building into more of a pipeline (rxjs?)
