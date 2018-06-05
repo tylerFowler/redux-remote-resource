@@ -68,7 +68,7 @@ test('middleware integration', st => {
         t.deepEqual(fetch.headers(), reqHeaders,
           'fetch was called with correct headers');
         t.end();
-      }).catch(failTest);
+      }).catch(failTest(t));
   });
 
   st.test(nest('post request w/ error'), t => {
@@ -114,7 +114,7 @@ test('middleware integration', st => {
           'fetched w/ correct method');
 
         t.end();
-      }).catch(failTest);
+      }).catch(failTest(t));
   });
 
   st.test(nest('middleware configuration'), t => {
@@ -162,7 +162,7 @@ test('middleware integration', st => {
           'custom fetch options are passed into the fetch call');
 
         t.end();
-      }).catch(failTest);
+      }).catch(failTest(t));
   });
 
   st.test(nest('idempotent request with cache'), t => {
@@ -194,6 +194,6 @@ test('middleware integration', st => {
       }
     };
 
-    store.dispatch(action).cache(failTest);
+    store.dispatch(action).cache(failTest(t));
   });
 });
