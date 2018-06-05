@@ -117,7 +117,53 @@ test('middleware integration', st => {
       }).catch(failTest);
   });
 
-  st.test(nest('post request'), t => t.fail('not implemented'));
-  st.test(nest('status actions'), t => t.fail('not implemented'));
+  st.test(nest('middleware configuration'), t => {
+    const STATUS_ACTION = 'STATUS_ACTION';
+    const middlewareConfig = {
+      injectedHeaders: { 'Content-Type': 'application/json' },
+      statusActions: { 201: dispatch => dispatch({ type: STATUS_ACTION }) },
+      requestOpts: { customKey: true }
+    };
+
+    const { fetch, store } = makeMockStore(middlewareConfig);
+
+    const responseStatus = 201;
+    fetch.respondWith(responseStatus, {});
+
+    const action = {
+      [RemoteResource]: {
+        uri: 'localhost/someapi',
+        method: 'post',
+        body: { test: 'data' },
+        lifecycle: {
+          request: REQUEST,
+          success: REQUEST_SUCCESS,
+          failure(error, dispatch) {
+            t.error(error);
+            dispatch({ type: REQUEST_FAILURE });
+          }
+        }
+      }
+    };
+
+    store.dispatch(action)
+      .then(() => {
+        const actions = store.getState();
+        t.ok(actions.length, 'state has actions');
+        t.ok(actionWasDispatched(REQUEST, actions), 'request was dispatched');
+        t.notok(actionWasDispatched(REQUEST_SUCCESS, actions),
+          'request success hook should be skipped by statusAction');
+        t.ok(actionWasDispatched(STATUS_ACTION, actions),
+          'status action hook was called');
+
+        t.deepEqual(fetch.headers(), middlewareConfig.injectedHeaders,
+          'headers are auto-injected into requests');
+        t.ok(fetch.options().hasOwnProperty('customKey'),
+          'custom fetch options are passed into the fetch call');
+
+        t.end();
+      }).catch(failTest);
+  });
+
   st.test(nest('idempotent request with cache'), t => t.fail('not implemented'));
 });
