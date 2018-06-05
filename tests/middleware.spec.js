@@ -71,7 +71,50 @@ test.only('middleware integration', st => {
       }).catch(failTest);
   });
 
-    t.end();
+  st.test(nest('post request w/ error'), t => {
+    const { fetch, store } = makeMockStore();
+
+    const responseStatus = 400;
+    const responseBody = { error: 'Some validation error' };
+    fetch.respondWith(responseStatus, responseBody);
+
+    const reqBody = { test: 'data' };
+    const action = {
+      [RemoteResource]: {
+        uri: 'localhost/someapi',
+        headers: { 'Content-Type': 'application/json' },
+        method: 'post',
+        body: reqBody,
+        lifecycle: {
+          request: REQUEST,
+          success(data, dispatch) {
+            t.fail('success hook should not have been called');
+            dispatch(REQUEST_SUCCESS);
+          },
+          failure(error, dispatch) {
+            return Promise.resolve(dispatch({ type: REQUEST_FAILURE, error }));
+          }
+        }
+      }
+    };
+
+    store.dispatch(action)
+      .then(() => {
+        const actions = store.getState();
+        t.ok(actions.length, 'state has actions');
+        t.ok(actionWasDispatched(REQUEST, actions), 'request was dispatched');
+        t.ok(actionWasDispatched(REQUEST_FAILURE, actions),
+          'request failure was dispatched');
+
+        const failAction = actions.find(ac => ac.type === REQUEST_FAILURE);
+        t.equals(failAction.error.statusText, responseBody.error,
+          'extracts error from response');
+
+        t.equals(fetch.method().toLowerCase(), 'post',
+          'fetched w/ correct method');
+
+        t.end();
+      });
   });
 
   st.test(nest('post request'), t => t.fail('not implemented'));
