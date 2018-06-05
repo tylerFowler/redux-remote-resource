@@ -89,7 +89,7 @@ test('middleware integration', st => {
           request: REQUEST,
           success(data, dispatch) {
             t.fail('success hook should not have been called');
-            dispatch(REQUEST_SUCCESS);
+            dispatch({ type: REQUEST_SUCCESS });
           },
           failure(error, dispatch) {
             return Promise.resolve(dispatch({ type: REQUEST_FAILURE, error }));
@@ -114,7 +114,7 @@ test('middleware integration', st => {
           'fetched w/ correct method');
 
         t.end();
-      });
+      }).catch(failTest);
   });
 
   st.test(nest('post request'), t => t.fail('not implemented'));
