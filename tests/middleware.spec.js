@@ -4,8 +4,8 @@ const test           = require('tape');
 const thunk          = require('redux-thunk').default;
 const middleware     = require('../lib/middleware').default;
 const RemoteResource = require('../lib/RemoteResource').default;
-const { createFetchMock, nest }        = require('./mock.helper');
-const { applyMiddleware, createStore } = require('redux');
+const { createFetchMock, nest, failTest } = require('./mock.helper');
+const { applyMiddleware, createStore }    = require('redux');
 
 function makeMockStore(remoteResourceOpts = {}) {
   const fetchMock = createFetchMock();
@@ -19,6 +19,9 @@ function makeMockStore(remoteResourceOpts = {}) {
   return { fetch: fetchMock, store };
 }
 
+const actionWasDispatched = (actionType, actions) =>
+  actions.some(({ type }) => type === actionType);
+
 // test action types
 const REQUEST = 'REQUEST';
 const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
@@ -30,10 +33,12 @@ test.only('middleware integration', st => {
 
     const respData = { test: 'data' };
     fetch.respondWith(200, respData);
+
     const reqHeaders = { 'Accept': 'application/json' };
+    const reqUrl = 'localhost/someapi';
     const action = {
       [RemoteResource]: {
-        uri: 'localhost/someapi',
+        uri: reqUrl,
         headers: reqHeaders,
         lifecycle: {
           request: REQUEST,
@@ -53,18 +58,18 @@ test.only('middleware integration', st => {
       .then(() => {
         const actions = store.getState();
         t.ok(actions.length, 'state has actions');
-
-        const actionWasDispatched =
-          actionType => actions.some(({ type }) => type === actionType);
-
-        t.ok(actionWasDispatched(REQUEST), 'request was dispatched');
-        t.ok(actionWasDispatched(REQUEST_SUCCESS),
+        t.ok(actionWasDispatched(REQUEST, actions), 'request was dispatched');
+        t.ok(actionWasDispatched(REQUEST_SUCCESS, actions),
           'request success was dispatched');
 
-        t.equals(fetch.method(), 'GET', 'fetched w/ method GET by default');
+        t.equals(fetch.url(), reqUrl, 'fetch w/ correct url');
+        t.equals(fetch.method().toLowerCase(), 'get',
+          'fetched w/ method GET by default');
         t.deepEqual(fetch.headers(), reqHeaders,
           'fetch was called with correct headers');
-      }).catch(t.fail);
+        t.end();
+      }).catch(failTest);
+  });
 
     t.end();
   });
