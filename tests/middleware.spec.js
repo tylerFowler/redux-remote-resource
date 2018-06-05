@@ -27,7 +27,7 @@ const REQUEST = 'REQUEST';
 const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
 const REQUEST_FAILURE = 'REQUEST_FAILURE';
 
-test.only('middleware integration', st => {
+test('middleware integration', st => {
   st.test(nest('idempotent request'), t => {
     const { fetch, store } = makeMockStore();
 
