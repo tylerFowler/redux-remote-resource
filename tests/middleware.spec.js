@@ -194,6 +194,6 @@ test('middleware integration', st => {
       }
     };
 
-    store.dispatch(action).cache(failTest(t));
+    store.dispatch(action).catch(failTest(t));
   });
 });
