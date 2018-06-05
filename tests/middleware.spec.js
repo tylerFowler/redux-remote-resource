@@ -165,5 +165,35 @@ test('middleware integration', st => {
       }).catch(failTest);
   });
 
-  st.test(nest('idempotent request with cache'), t => t.fail('not implemented'));
+  st.test(nest('idempotent request with cache'), t => {
+    const { fetch, store } = makeMockStore();
+
+    // fetch should never be called, it's an error if it is
+    fetch.respondWith(500);
+
+    const cachedData = "I'm a cached value";
+    const cacheReducer = () => ({ cacheData: cachedData });
+    store.replaceReducer(cacheReducer);
+
+    const action = {
+      [RemoteResource]: {
+        uri: 'localhost/someapi',
+        method: 'get',
+        cacheMapping: state => state.cacheData,
+        lifecycle: {
+          request: REQUEST,
+          success(data) {
+            t.equals(data, cachedData, 'retrieves cached data');
+            t.end();
+          },
+          failure() {
+            t.fail('fetch is not called');
+            t.end();
+          }
+        }
+      }
+    };
+
+    store.dispatch(action).cache(failTest);
+  });
 });
