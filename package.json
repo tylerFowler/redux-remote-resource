@@ -49,9 +49,15 @@
     "gulp-rename": "^1.2.3",
     "gulp-tape": "^1.0.0",
     "gulp-uglify": "^3.0.0",
+    "redux": "^4.0.0",
+    "redux-mock-store": "^1.5.1",
+    "redux-thunk": "^2.3.0",
     "tap-colorize": "^1.2.0",
     "tape": "^4.9.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
+  },
+  "resolutions": {
+    "natives": "1.1.3"
   }
 }
